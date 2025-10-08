@@ -1,6 +1,6 @@
 import { ThemeToggle } from "../components/theme_toggle"
 import { Navbar } from "../components/navbrar"
-import { HeroSection } from "../components/hero-section"
+import { HeroSection } from "../components/hero_section"
 
 
 export const Home = () => {

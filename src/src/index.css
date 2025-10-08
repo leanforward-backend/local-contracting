@@ -1,14 +1,19 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
 
 @theme {
+
   --color-border: hsl(var(--border));
   --color-background: hsl(var(--background));
   --color-foreground: hsl(var(--foreground));
-
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
   --color-primary: hsl(var(--primary));
   --color-primary-foreground: hsl(var(--primary-foreground));
-
-  --color-card: hsl(var(--card));
 
   --animate-float: float 6s ease-in-out infinite;
   --animate-pulse-subtle: pulse-subtle 4s ease-in-out infinite;
@@ -74,27 +79,39 @@
 
 @layer base {
   :root {
-    --background: 210 40% 98%;
-    --foreground: 222 47% 11%;
+    --background: 190 40% 89%;
 
-    --card: 0 0% 100%;
+    --foreground: 239 90% 19%;
 
-    --primary: 250 47% 60%;
-    --primary-foreground: 210 40% 98%;
+    --card: 190 54% 84%;
+    --card-foreground: 239 90% 19%;
 
-    --border: 214 32% 91%;
+    --muted: 189 63% 76%;
+    --muted-foreground: 214 97% 27%;
+
+    --primary: 201 100% 36%;
+    --primary-foreground: 190 40% 89%;
+
+    --border: 190 68% 60%;
+
+    --radius: 0.625rem;
   }
 
   .dark {
-    --background: 222 47% 4%;
-    --foreground: 213 31% 91%;
+    --background: 206 97% 15%;
+    --foreground: 202 56% 38%;
 
-    --card: 222 47% 8%;
+    --card: 214 97% 27%;
+    --card-foreground: 190 40% 89%;
 
-    --primary: 250 65% 65%;
-    --primary-foreground: 213 31% 91%;
+    --muted: 201 100% 36%;
+    --muted-foreground: 189 63% 76%;
 
-    --border: 217 33% 20%;
+    --primary: 195 100% 43%;
+    --primary-foreground: 239 90% 19%;
+
+    --border: 195 100% 39%;
+
   }
 
   * {
