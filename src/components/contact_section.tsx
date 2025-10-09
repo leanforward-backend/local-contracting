@@ -1,9 +1,49 @@
 import { CircleUserRound, Mail, MapPin, Phone } from "lucide-react"
+import { useState } from "react"
+import { Button } from "./ui/button"
 import { Input } from "./ui/input"
 import { Textarea } from "./ui/textarea"
-import { Button } from "./ui/button"
 
 export const ContactSection = () => {
+
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle')
+
+    const handleSubmit = async (evt: React.FormEvent<HTMLFormElement>) => {
+        evt.preventDefault();
+        setIsSubmitting(true);
+        setSubmitStatus('idle');
+
+        const formData = new FormData(evt.currentTarget);
+        const data = {
+            name: formData.get('name'),
+            email: formData.get('email'),
+            message: formData.get('message'),
+            questions: formData.get('questions'),
+        }
+
+        try {
+            const response = await fetch('/api/send-email', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            });
+            if (response.ok) {
+                setSubmitStatus('success');
+                evt.currentTarget.reset();
+            } else {
+                setSubmitStatus('error')
+            }
+        } catch (error) {
+            console.error('Error:', error)
+            setSubmitStatus('error');
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
+
     return (
         <section id="contact" className="py-24 px-4 relative bg-secondary/30">
             <div className="container mx-auto max-w-5xl">
@@ -80,7 +120,7 @@ export const ContactSection = () => {
                     </div>
                     <div className="bg-card p-8 rounded-lg shadow-xs">
                         <h3 className="text-2xl font-semibold mb-6"> Hire me to work for you</h3>
-                        <form className="space-y-6">
+                        <form className="space-y-6" onSubmit={handleSubmit}>
                             <div>
                                 <label
                                     htmlFor="name"
@@ -89,6 +129,7 @@ export const ContactSection = () => {
                                 <Input
                                     type="text"
                                     id="name"
+                                    name="name"
                                     required={true}
                                     className="w-full px-4 py-3 rounded-md border border-inout bg-background"
                                     placeholder="Your Name Here..."
@@ -102,6 +143,7 @@ export const ContactSection = () => {
                                 <Input
                                     type="email"
                                     id="email"
+                                    name="email"
                                     required={true}
                                     className="w-full px-4 py-3 rounded-md border border-inout bg-background"
                                     placeholder="youremail@gmail.com..."
@@ -114,6 +156,7 @@ export const ContactSection = () => {
                                 > What would you want to hire me for?*</label>
                                 <Textarea
                                     id="message"
+                                    name="message"
                                     required={true}
                                     className="w-full px-4 py-3 rounded-md border border-inout bg-background"
                                     placeholder="Description of what work I will be doing for you..."
@@ -122,18 +165,19 @@ export const ContactSection = () => {
 
                             <div>
                                 <label
-                                    htmlFor="message"
+                                    htmlFor="questions"
                                     className="block text-sm font-medium mb-2"
                                 > Any questions you have?</label>
                                 <Textarea
                                     id="questions"
+                                    name="questions"
                                     required={false}
                                     className="w-full px-4 py-3 rounded-md border border-inout bg-background"
                                     placeholder="Any questions you have? I will get back to you as soon as possible..."
                                 />
                             </div>
-                            <Button type="submit" className="w-full">
-                                Send Message
+                            <Button type="submit" className="w-full" disabled={isSubmitting}>
+                                {isSubmitting ? 'Sending...' : 'Send Message'}
                             </Button>
                         </form>
                     </div>
