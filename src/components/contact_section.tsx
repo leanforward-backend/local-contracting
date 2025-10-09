@@ -7,12 +7,10 @@ import { Textarea } from "./ui/textarea"
 export const ContactSection = () => {
 
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle')
 
     const handleSubmit = async (evt: React.FormEvent<HTMLFormElement>) => {
         evt.preventDefault();
         setIsSubmitting(true);
-        setSubmitStatus('idle');
 
         const formData = new FormData(evt.currentTarget);
         const data = {
@@ -31,16 +29,10 @@ export const ContactSection = () => {
                 body: JSON.stringify(data),
             });
             if (response.ok) {
-                setSubmitStatus('success');
                 evt.currentTarget.reset();
-            } else {
-                setSubmitStatus('error')
             }
         } catch (error) {
             console.error('Error:', error)
-            setSubmitStatus('error');
-        } finally {
-            setIsSubmitting(false);
         }
     };
 
