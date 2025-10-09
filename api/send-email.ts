@@ -1,6 +1,6 @@
-import type { VercelRequest, VercelResponse } from '@vercel/node';
+import { VercelRequest, VercelResponse } from '@vercel/node';
 import { Resend } from 'resend';
-import { ContractInvitation } from '../src/react-email-starter/emails/contract-invitation';
+import { ContractInvitation } from '../emails/contract-invitation';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -31,7 +31,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     try {
         const data = await resend.emails.send({
-            from: 'tobycrust@gmail.com', // Replace with your verified domain
+            from: 'onboarding@resend.dev',
             to: email,
             subject: 'Thanks for reaching out!',
             react: ContractInvitation({
