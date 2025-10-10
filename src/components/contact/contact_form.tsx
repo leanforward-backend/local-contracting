@@ -37,21 +37,46 @@ export const ContactForm = () => {
 
     const onSubmit = async (data: EmailFormValues) => {
         try {
-            const result = await emailjs.send(
-                'service_bvidwob',      // Your Service ID
-                'template_unjgzur',    // Your Template ID
+
+            const emailJsResult = await emailjs.send(
+                'service_bvidwob',
+                'template_unjgzur',
                 {
                     to_name: data.name,
                     to_email: data.email,
                     subject: data.subject || 'Thanks for contacting us!',
                     message: data.message || 'No message provided',
                 },
-                '9q7mZH59KDwEyGWH9'        // Your Public Key
+                '9q7mZH59KDwEyGWH9'
             );
 
-            console.log('Email sent:', result);
-            alert('Email sent successfully!')
+            console.log('Confirmation email sent to user:', emailJsResult);
+
+
+            const resendResult = await fetch('/api/send-email', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    name: data.name,
+                    email: data.email,
+                    message: data.subject || 'No subject provided',
+                    questions: data.message || 'No questions provided',
+                }),
+            });
+
+            if (!resendResult.ok) {
+                throw new Error('Failed to send notification email');
+            }
+
+            const resendData = await resendResult.json();
+            console.log('Notification email sent to you:', resendData);
+
+
+            alert('Email sent successfully! You will receive a confirmation shortly.')
             form.reset()
+
         } catch (error) {
             console.error('Error:', error)
             alert('An error occurred. Please try again.')
