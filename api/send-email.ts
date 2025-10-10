@@ -1,5 +1,4 @@
 import { Resend } from 'resend';
-import { ContractInvitation } from '../emails/contract-invitation';
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
@@ -25,14 +24,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             to: 'leanforward.designs@gmail.com',
             subject: `New contact from ${name}`,
             text: `Name: ${name}\nEmail: ${email}\nMessage: ${message}\nQuestions: ${questions || 'None'}`,
-        });
-
-        // Send confirmation email back to the person who filled out the form
-        await resend.emails.send({
-            from: 'onboarding@resend.dev',
-            to: email, // Send to the person who filled out the form
-            subject: 'Thanks for reaching out!',
-            react: ContractInvitation(),
         });
 
         // Send success response
