@@ -16,45 +16,23 @@ import {
     Text,
 } from '@react-email/components';
 
-interface ContractInvitationProps {
-    username?: string;
-    userImage?: string;
-    invitedByUsername?: string;
-    invitedByEmail?: string;
-    teamName?: string;
-    teamImage?: string;
-    inviteLink?: string;
-    inviteFromIp?: string;
-    inviteFromLocation?: string;
-}
 
 const baseUrl = process.env.VERCEL_URL
     ? `https://${process.env.VERCEL_URL}`
     : '';
 
-export const ContractInvitation = ({
-    username,
-    userImage,
-    invitedByUsername,
-    invitedByEmail,
-    teamName,
-    teamImage,
-    inviteLink,
-    inviteFromIp,
-    inviteFromLocation,
-}: ContractInvitationProps) => {
-    const previewText = `Let's make this happen ${invitedByUsername}`;
+export const ContractInvitation = () => {
 
     return (
         <Html>
             <Head />
-            <Preview>{previewText}</Preview>
+            <Preview>Preview Text</Preview>
             <Tailwind>
                 <Body className="mx-auto my-auto bg-white px-2 font-sans">
                     <Container className="mx-auto my-[40px] max-w-[465px] rounded border border-[#eaeaea] border-solid p-[20px]">
                         <Section className="mt-[32px]">
                             <Text className="text-[14px] text-black leading-[24px]">
-                                Hey {username}, thanks for reaching out,
+                                Hey ___Person___, thanks for reaching out,
                             </Text>
                             <Text className="text-[14px] text-black leading-[24px]">
                                 I will get back to you within three buisness days.

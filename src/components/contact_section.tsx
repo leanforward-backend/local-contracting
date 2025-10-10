@@ -14,8 +14,8 @@ export const ContactSection = () => {
 
         const formData = new FormData(evt.currentTarget);
         const data = {
-            name: formData.get('name'),
             email: formData.get('email'),
+            name: formData.get('name'),
             message: formData.get('message'),
             questions: formData.get('questions'),
         }
