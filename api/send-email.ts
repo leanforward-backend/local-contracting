@@ -16,11 +16,20 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             return res.status(400).json({ error: 'Missing required fields' });
         }
 
+        // Send notification to you
         await resend.emails.send({
             from: 'Acme <onboarding@resend.dev>',
             to: 'leanforward.designs@gmail.com',
             subject: `New contact from ${name}`,
-            react: ContractInvitation() as React.ReactElement,
+            text: `Name: ${name}\nEmail: ${email}\nMessage: ${message}\nQuestions: ${questions || 'None'}`,
+        });
+
+        // Send confirmation to the user
+        await resend.emails.send({
+            from: 'Toby Crust <onboarding@resend.dev>',
+            to: email,
+            subject: 'Thanks for reaching out!',
+            react: ContractInvitation({ name, email, message, questions }) as React.ReactElement,
         });
 
         return res.status(200).json({ success: true, message: 'Emails sent successfully' });
