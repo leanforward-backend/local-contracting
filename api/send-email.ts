@@ -5,21 +5,32 @@ import type { VercelRequest, VercelResponse } from '@vercel/node';
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
+    // Only allow POST requests
+    if (req.method !== 'POST') {
+        return res.status(405).json({ error: 'Method not allowed' });
+    }
 
     try {
+        // Get the form data from the request body
+        const { email, name, message, questions } = req.body;
+
+        // Validate required fields
+        if (!email || !name || !message) {
+            return res.status(400).json({ error: 'Missing required fields' });
+        }
 
         // Send email to yourself (notification of new contact)
         await resend.emails.send({
             from: 'onboarding@resend.dev',
-            to: 'tobycrust@gmail.com',
-            subject: `New contact from Toby`,
-            text: `Name: Toby\nEmail: tobycrust@gmail.com\nMessage: message\nQuestions: questions`,
+            to: 'leanforward.designs@gmail.com',
+            subject: `New contact from ${name}`,
+            text: `Name: ${name}\nEmail: ${email}\nMessage: ${message}\nQuestions: ${questions || 'None'}`,
         });
 
         // Send confirmation email back to the person who filled out the form
         await resend.emails.send({
             from: 'onboarding@resend.dev',
-            to: 'tobycrust@gmail.com',
+            to: email, // Send to the person who filled out the form
             subject: 'Thanks for reaching out!',
             react: ContractInvitation(),
         });
