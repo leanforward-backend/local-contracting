@@ -1,8 +1,8 @@
 import {
     Body,
     Button,
-    Column,
     Container,
+    Column,
     Head,
     Heading,
     Hr,
@@ -12,54 +12,92 @@ import {
     Preview,
     Row,
     Section,
-    Tailwind,
     Text,
-} from '@react-email/components';
+    Tailwind,
+} from "@react-email/components";
+import * as React from "react";
 
+interface VercelInviteUserEmailProps {
+    name?: string;
+    email?: string;
+    subject?: string;
+    questions?: string;
+}
 
-const baseUrl = process.env.VERCEL_URL
-    ? `https://${process.env.VERCEL_URL}`
-    : '';
-
-export const ContractInvitation = () => {
+export const VercelInviteUserEmail = ({
+    name = 'there',
+    email = '',
+    subject = 'No subject provided',
+    questions = 'No questions provided'
+}: VercelInviteUserEmailProps = {}) => {
+    const previewText = `New contact from ${name}`;
 
     return (
         <Html>
             <Head />
-            <Preview>Preview Text</Preview>
+            <Preview>{previewText}</Preview>
             <Tailwind>
-                <Body className="mx-auto my-auto bg-white px-2 font-sans">
-                    <Container className="mx-auto my-[40px] max-w-[465px] rounded border border-[#eaeaea] border-solid p-[20px]">
+                <Body className="bg-white my-auto mx-auto font-sans px-2">
+                    <Container className="border border-solid border-[#eaeaea] rounded my-[40px] mx-auto p-[20px] max-w-[465px]">
                         <Section className="mt-[32px]">
-                            <Text className="text-[14px] text-black leading-[24px]">
-                                Hey ___Person___, thanks for reaching out,
-                            </Text>
-                            <Text className="text-[14px] text-black leading-[24px]">
-                                I will get back to you within three buisness days.
-                            </Text>
-                            <Text className="text-[14px] text-black leading-[24px]">
-                                If you have any more questions, feel free to send me another email to
-                            </Text>
-                            <Text className='bold'>tobycrust@gmail.com</Text>
-                            <Text className='bold'>Or send me a message</Text>
-                            <Text> 042 5843 487</Text>
-
-                            <Text className="text-[14px] text-black leading-[24px]">
-                                Best regards,
-                                <br />
-                                Toby Crust
-                            </Text>
-                            <Section>
-                                <Button className="rounded bg-[#000000] px-5 py-3 text-center font-semibold text-[12px] text-white no-underline" href={"https://local-contracting-3rahxawzo-leanforward-backends-projects.vercel.app/"}>
-                                    Link back to my website
-                                </Button>
-                            </Section>
+                            <Heading className="text-black text-[24px] font-normal p-0 my-[30px] mx-0">
+                                New Contact Request
+                            </Heading>
                         </Section>
+
+                        <Text className="text-black text-[14px] leading-[24px]">
+                            <strong>From:</strong> {name}
+                        </Text>
+                        <Text className="text-black text-[14px] leading-[24px]">
+                            <strong>Email:</strong>{" "}
+                            <Link
+                                href={`mailto:${email}`}
+                                className="text-blue-600 no-underline"
+                            >
+                                {email}
+                            </Link>
+                        </Text>
+
+                        <Hr className="border border-solid border-[#eaeaea] my-[26px] mx-0 w-full" />
+
+                        <Text className="text-black text-[14px] leading-[24px]">
+                            <strong>What they want to hire you for:</strong>
+                        </Text>
+                        <Text className="text-black text-[14px] leading-[24px] bg-gray-50 p-4 rounded">
+                            {subject}
+                        </Text>
+
+                        {questions && questions !== 'No questions provided' && (
+                            <>
+                                <Text className="text-black text-[14px] leading-[24px] mt-[20px]">
+                                    <strong>Their questions:</strong>
+                                </Text>
+                                <Text className="text-black text-[14px] leading-[24px] bg-gray-50 p-4 rounded">
+                                    {questions}
+                                </Text>
+                            </>
+                        )}
+
+                        <Section className="text-center mt-[32px] mb-[32px]">
+                            <Button
+                                href={`mailto:${email}`}
+                                className="bg-[#000000] rounded text-white text-[12px] font-semibold no-underline text-center px-5 py-3"
+                            >
+                                Reply to {name}
+                            </Button>
+                        </Section>
+
+                        <Hr className="border border-solid border-[#eaeaea] my-[26px] mx-0 w-full" />
+
+                        <Text className="text-[#666666] text-[12px] leading-[24px]">
+                            This notification was sent from your website contact form at{" "}
+                            <span className="text-black">local-contracting</span>.
+                        </Text>
                     </Container>
                 </Body>
             </Tailwind>
-        </Html >
+        </Html>
     );
 };
 
-export default ContractInvitation;
+export default VercelInviteUserEmail;
