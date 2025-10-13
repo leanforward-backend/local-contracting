@@ -22,11 +22,11 @@ export default async function handler(req: any, res: any) {
             <html>
                 <body style="background-color: #000000; margin: 0 auto; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;">
                     <div style="margin: auto; padding: 96px 20px 64px;">    
-                        <h1 class="text-white">New contact request from ${name}</h1>
-                        <p class="text-white">Name: ${name}</p>
-                        <p class="text-white">Email: ${email}</p>
-                        <p class="text-white">Subject: ${subject}</p>
-                        <p class="text-white">Questions: ${questions}</p>
+                        <h1 style="color: #ffffff; font-size: 24px; font-weight: 600; line-height: 40px; margin: 0 0 20px;">New contact request from ${name}</h1>
+                        <p style="color: #ffffff; font-size: 14px; line-height: 24px; margin: 0 0 20px;">Name: ${name}</p>
+                        <p style="color: #ffffff; font-size: 14px; line-height: 24px; margin: 0 0 20px;">Email: ${email}</p>
+                        <p style="color: #ffffff; font-size: 14px; line-height: 24px; margin: 0 0 20px;">Subject: ${subject}</p>
+                        <p style="color: #ffffff; font-size: 14px; line-height: 24px; margin: 0 0 20px;">Questions: ${questions}</p>
                     </div>
                 </body>
             </html>
