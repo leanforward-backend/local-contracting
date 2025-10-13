@@ -1,10 +1,8 @@
 import { Resend } from 'resend';
-import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { VercelInviteUserEmail } from '../emails/contract-invitation.js';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-export default async function handler(req: VercelRequest, res: VercelResponse) {
+export default async function handler(req: any, res: any) {
     if (req.method !== 'POST') {
         return res.status(405).json({ error: 'Method not allowed' });
     }
@@ -17,38 +15,26 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         }
 
         const { data, error } = await resend.emails.send({
-            from: 'Toby <onboarding@resend.dev>',
+            from: 'Contracting Work <onboarding@resend.dev>',
             to: 'leanforward.designs@gmail.com',
-            subject: `New contact from ${name}`,
-            react: VercelInviteUserEmail({
-                name,
-                email,
-                subject: message || 'No subject provided',
-                questions: questions || 'No questions provided'
-            }),
+            subject: `New contact request from ${name}`,
+            html: `
+            <html>
+                <body style="background-color: #000000; margin: 0 auto; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;">
+                    <div style="margin: auto; padding: 96px 20px 64px;">    
+                        <h1>New contact request from ${name}</h1>
+                        <p>Name: ${name}</p>
+                        <p>Email: ${email}</p>
+                        <p>Message: ${message}</p>
+                        <p>Questions: ${questions}</p>
+                    </div>
+                </body>
+            </html>
+            `,
         });
 
-        if (error) {
-            console.error('Resend API error:', error);
-            return res.status(500).json({
-                error: 'Failed to send email',
-                details: error.message
-            });
-        }
-
-        console.log('Email sent successfully:', data);
-
-        return res.status(200).json({
-            success: true,
-            message: 'Email sent successfully!',
-            data
-        });
-
+        return res.status(200).json(data);
     } catch (error) {
-        console.error('Unexpected error sending email:', error);
-        return res.status(500).json({
-            error: 'Failed to send email',
-            details: error instanceof Error ? error.message : 'Unknown error'
-        });
+        return res.status(500).json({ error: 'Failed to send email' });
     }
 }

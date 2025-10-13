@@ -58,23 +58,14 @@ export const ContactForm = () => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({
-                    name: data.name,
-                    email: data.email,
-                    message: data.subject || 'No subject provided',
-                    questions: data.message || 'No questions provided',
-                }),
+                body: JSON.stringify(data),
             });
 
             if (!resendResult.ok) {
                 throw new Error('Failed to send notification email');
             }
 
-            const resendData = await resendResult.json();
-            console.log('Notification email sent to you:', resendData);
-
-
-            alert('Email sent successfully! You will receive a confirmation shortly.')
+            alert(`Thanks for getting in touch ${data.name}! You will receive a confirmation email shortly.`)
             form.reset()
 
         } catch (error) {
