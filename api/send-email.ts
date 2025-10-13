@@ -8,7 +8,7 @@ export default async function handler(req: any, res: any) {
     }
 
     try {
-        const { name, email, message, questions } = req.body;
+        const { name, email, subject, questions } = req.body;
 
         if (!email || !name) {
             return res.status(400).json({ error: 'Missing required fields: name and email' });
@@ -22,11 +22,11 @@ export default async function handler(req: any, res: any) {
             <html>
                 <body style="background-color: #000000; margin: 0 auto; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;">
                     <div style="margin: auto; padding: 96px 20px 64px;">    
-                        <h1>New contact request from ${name}</h1>
-                        <p>Name: ${name}</p>
-                        <p>Email: ${email}</p>
-                        <p>Message: ${message}</p>
-                        <p>Questions: ${questions}</p>
+                        <h1 class="text-white">New contact request from ${name}</h1>
+                        <p class="text-white">Name: ${name}</p>
+                        <p class="text-white">Email: ${email}</p>
+                        <p class="text-white">Subject: ${subject}</p>
+                        <p class="text-white">Questions: ${questions}</p>
                     </div>
                 </body>
             </html>

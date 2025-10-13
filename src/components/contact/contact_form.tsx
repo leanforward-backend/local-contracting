@@ -16,7 +16,7 @@ const emailFormSchema = z.object({
         message: "Please enter a valid email address.",
     }),
     subject: z.optional(z.string()),
-    message: z.optional(z.string()),
+    questions: z.optional(z.string()),
 })
 
 
@@ -31,7 +31,7 @@ export const ContactForm = () => {
             name: "",
             email: "",
             subject: "",
-            message: "",
+            questions: "",
         },
     })
 
@@ -121,7 +121,7 @@ export const ContactForm = () => {
                     />
                     <FormField
                         control={form.control}
-                        name="message"
+                        name="questions"
                         render={({ field }) => (
                             <FormItem>
                                 <FormLabel>Any questions you have?</FormLabel>
