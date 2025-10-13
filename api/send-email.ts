@@ -1,27 +1,23 @@
 import { Resend } from 'resend';
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { VercelInviteUserEmail } from '../emails/contract-invitation';
+import { VercelInviteUserEmail } from '../emails/contract-invitation.js';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-    // Only allow POST requests
     if (req.method !== 'POST') {
         return res.status(405).json({ error: 'Method not allowed' });
     }
 
     try {
-        // Extract data from request body (sent from contact form)
         const { name, email, message, questions } = req.body;
 
-        // Validate required fields
         if (!email || !name) {
             return res.status(400).json({ error: 'Missing required fields: name and email' });
         }
 
-        // Send email using Resend
         const { data, error } = await resend.emails.send({
-            from: 'Toby <onboarding@resend.dev>', // Update this with your verified domain
+            from: 'Toby <onboarding@resend.dev>',
             to: 'leanforward.designs@gmail.com',
             subject: `New contact from ${name}`,
             react: VercelInviteUserEmail({
@@ -32,7 +28,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             }),
         });
 
-        // Handle Resend API errors
         if (error) {
             console.error('Resend API error:', error);
             return res.status(500).json({
@@ -43,7 +38,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
         console.log('Email sent successfully:', data);
 
-        // Return success response
         return res.status(200).json({
             success: true,
             message: 'Email sent successfully!',
